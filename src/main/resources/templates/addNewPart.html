@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Add new Part</title>
+    <style>
+    form, a{
+    font-size: 20px;
+    }
+    </style>
+</head>
+<body>
+
+<form action="#" th:action="@{/addNewPart}" th:object="${part}" method="post">
+    <p>Наименование: <input type="text" th:field="*{title}" /></p>
+    <p>Количество: <input type="number" th:field="*{partscount}" /></p>
+    <p>Необходимость: <input type="checkbox" th:checked="${part.need}" th:field="*{need}"/></p>
+    <p><input type="submit" value="Добавить" />
+</form>
+    <a href="/parts">Назад</a>
+</div>
+</body>
+</html>

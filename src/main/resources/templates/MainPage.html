@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список комплектующих</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        div {
+            font-size: 20px;
+        }
+
+        thead tr, tfoot tr{
+            height: 40px;
+            text-align: center;
+            background: #E4E4E4;
+        }
+
+        ul.page-item {
+            display: inline-block;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        ul.page-item li {display: inline;}
+
+        ul.page-item li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+        table {
+            margin: 5px;
+            border-collapse: collapse;
+            width: 60%;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        tbody tr td{
+            text-align: center-left;
+            border-bottom: 1px solid #ddd;
+            height: 25px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2}
+
+        .select {
+            margin-right: 5px;}
+    </style>
+</head>
+<body>
+
+<div align = "center">
+    <div>
+        <a class='select' href=/selectAll>Все</a>
+        <a class='select' href=/selectNeed>Необходимы для сборки</a>
+        <a class='select' href=/selectOptional>Опциональные детали</a>
+    </div>
+        <table>
+        <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Необходимость</th>
+            <th>Количество</th>
+            <th>Опции</th>
+            <th></th>
+        </tr>
+        </thead>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>Можно собрать</td>
+                <th th:text='${computer}'></th>
+                <td th:text="'компьютер'+ ${correctText}"> </td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        <tbody>
+        <a href=/addNewPart>Добавить</a>
+        <tr th:each='part : ${parts}'>
+            <td th:text='${part.title}'></td>
+            <td th:text='${part.needString()}'></td>
+            <td th:text='${part.partscount}'></td>
+            <td>
+                <form action="#" th:action="@{/editPart/part.id}" th:object="${part}" method="get">
+                    <input type="hidden" name = "id" th:value="*{id}"/>
+                    <input type="submit" value="Редактировать" />
+                </form>
+            </td>
+            <td>
+                <form action="#" th:action="@{/parts}" th:object="${part}" method="post">
+                    <input type="hidden" name = "id" th:value="*{id}"/>
+                    <input type="submit" value="Удалить" />
+                </form>
+            </td>
+        </tr>
+            </tbody>
+        </table>
+
+    <div th:replace="pagination :: pagination(${pages})"></div>
+
+        <form action="#" th:action="filter" th:object="${pages.getPageable()}" method="post">
+        <input type="text" name = "title" />
+        <input type="hidden" name = "page" th:value="${pages.getPageable()}"/>
+        <input type="submit" value="Найти" />
+        </form>
+</div>
+    </body>
+    </html>
